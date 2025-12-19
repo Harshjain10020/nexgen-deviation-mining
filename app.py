@@ -26,30 +26,30 @@ def load_data():
     cost = pd.read_csv("data/cost_breakdown.csv")
     feedback = pd.read_csv("data/customer_feedback.csv")
     
-    # Helper to normalize and rename columns
+    
     def clean_df(df, mapping=None):
-        # Normalize to snake_case: Order_ID -> order_id
+       
         df.columns = [c.lower().strip().replace(' ', '_') for c in df.columns]
         if mapping:
             df.rename(columns=mapping, inplace=True)
         return df
 
-    # Apply cleaning and specific renames to match app logic
+  
     orders = clean_df(orders, {'order_value_inr': 'order_value'})
     
-    # Delivery: delivery_status -> status, delivery_cost_inr -> delivery_cost, customer_rating -> rating
+    
     delivery = clean_df(delivery, {
         'delivery_status': 'status', 
         'delivery_cost_inr': 'delivery_cost', 
         'customer_rating': 'rating'
     })
     
-    # Routes: traffic_delay_minutes -> traffic_delay
+
     routes = clean_df(routes, {'traffic_delay_minutes': 'traffic_delay'})
     
     cost = clean_df(cost)
     
-    # Feedback: rating -> feedback_rating (to avoid collision with delivery rating)
+    
     feedback = clean_df(feedback, {'rating': 'feedback_rating'})
     
     return orders, delivery, routes, cost, feedback
